@@ -5,7 +5,7 @@ import LoginForm from '@/components/LoginForm';
 import AthleteProfile from '@/components/AthleteProfile';
 import MeasurementDashboard from '@/components/MeasurementDashboard';
 
-const API_BASE_URL = "https://dbtm-webapp.onrender.com/api";
+export const API_BASE_URL = "https://dbtm-backend.onrender.com/api";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
