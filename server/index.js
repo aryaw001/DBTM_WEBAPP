@@ -3,18 +3,18 @@ import cors from 'cors';
 import mysql from 'mysql2/promise';
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
 // ✅ MySQL Connection
 const dbConfig = {
-  host: '127.0.0.1',
-  user: 'root',
-  password: 'Arya@15139748',
-  database: 'new_database',
-  port: 3306,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306,
 };
 
 const db = mysql.createPool(dbConfig);
@@ -129,6 +129,6 @@ app.get('/api/measurements/:user_id', async (req, res) => {
 });
 
 // ✅ SERVER START
-app.listen(5000, '0.0.0.0', () => {
-  console.log('🚀 Server running on http://0.0.0.0:5000');
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
 });
