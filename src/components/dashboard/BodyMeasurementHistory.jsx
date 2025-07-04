@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { API_BASE_URL } from '../../lib/config';
 
 const BodyMeasurementHistory = ({ measurements, esp32Ip, onDeleteHistory }) => {
   const [showPrevious, setShowPrevious] = useState(false);
@@ -29,7 +30,7 @@ const BodyMeasurementHistory = ({ measurements, esp32Ip, onDeleteHistory }) => {
       } = measurement;
 
     try {
-      const res = await fetch(`http://192.168.164.154:5000/api/measurements`, {
+      const res = await fetch(`${API_BASE_URL}/measurements`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
