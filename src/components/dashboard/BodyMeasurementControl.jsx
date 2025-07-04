@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { API_BASE_URL } from '../../lib/config';
 import {
   Card,
   CardContent,
@@ -69,7 +70,7 @@ const BodyMeasurementControl = ({
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user?.id) return;
     try {
-      await axios.post('http://192.168.0.140:5000/api/measurements', {
+      await axios.post(`${API_BASE_URL}/measurements`, {
         user_id: user.id,
         crown_height: measurementData.crown_height,
         shoulder_height: measurementData.shoulder_height,

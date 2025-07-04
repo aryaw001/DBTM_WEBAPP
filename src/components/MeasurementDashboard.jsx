@@ -8,6 +8,7 @@ import BodyMeasurementWebSocket from "@/components/dashboard/BodyMeasurementWebS
 import ActivityMeasurementControl from '@/components/dashboard/ActivityMeasurementControl';
 import BodyMeasurementHistory from '@/components/dashboard/BodyMeasurementHistory';
 import ActivityMeasurementHistory from '@/components/dashboard/ActivityMeasurementHistory';
+import { API_BASE_URL } from '../lib/config';
 
 const MeasurementDashboard = ({ profile, onLogout }) => {
   const [liveMeasurement, setLiveMeasurement] = useState(null);
@@ -72,7 +73,7 @@ const MeasurementDashboard = ({ profile, onLogout }) => {
 
   // 2. Send to backend SQL
   console.log("📤 Sending to SQL DB:", updated);
-  axios.post('http://192.168.0.140:5000/api/measurements', {
+  axios.post(`${API_BASE_URL}/measurements`, {
     user_id: user?.id || 1,  // default fallback
     crown_height: newData.crownHeight ?? 0,
     shoulder_height: newData.shoulderHeight ?? 0,
