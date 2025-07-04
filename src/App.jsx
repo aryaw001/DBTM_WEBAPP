@@ -4,60 +4,29 @@ import { Toaster } from '@/components/ui/toaster';
 import LoginForm from '@/components/LoginForm';
 import AthleteProfile from '@/components/AthleteProfile';
 import MeasurementDashboard from '@/components/MeasurementDashboard';
-import { API_BASE_URL } from '@/lib/config';
 
 const API_BASE_URL = "https://dbtm-webapp.onrender.com/api";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-  const [athleteProfile, setAthleteProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('currentUser');
-    const savedProfile = localStorage.getItem('athleteProfile');
-
+    const savedUser = localStorage.getItem('user');
     if (savedUser) {
       setCurrentUser(JSON.parse(savedUser));
     }
-    if (savedProfile) {
-      setAthleteProfile(JSON.parse(savedProfile));
-    }
-
     setLoading(false);
   }, []);
 
-  const handleLogin = async (email, password) => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!res.ok) {
-        throw new Error('Invalid credentials');
-      }
-
-      const data = await res.json();
-      setCurrentUser(data);
-      localStorage.setItem('currentUser', JSON.stringify(data));
-    } catch (err) {
-      console.error('Login failed:', err.message);
-      alert('Login failed: ' + err.message);
-    }
+  const handleLogin = (user) => {
+    setCurrentUser(user);
+    localStorage.setItem('user', JSON.stringify(user));
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
-    setAthleteProfile(null);
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('athleteProfile');
-  };
-
-  const handleProfileComplete = (profile) => {
-    setAthleteProfile(profile);
-    localStorage.setItem('athleteProfile', JSON.stringify(profile));
+    localStorage.removeItem('user');
   };
 
   if (loading) {
@@ -72,24 +41,18 @@ function App() {
     <>
       <Helmet>
         <title>Athlete Measurement Dashboard - Track Your Performance</title>
-        <meta name="description" content="Advanced athlete measurement dashboard with ESP32 integration for real-time body measurements and activity tracking. Monitor your performance with precision." />
+        <meta
+          name="description"
+          content="Advanced athlete measurement dashboard with ESP32 integration for real-time body measurements and activity tracking. Monitor your performance with precision."
+        />
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 text-white">
         <Toaster />
         {!currentUser ? (
-          <LoginForm onLogin={(user) => {
-            setCurrentUser(user);
-            localStorage.setItem('currentUser', JSON.stringify(user));
-          }} />
+          <LoginForm onLogin={handleLogin} />
         ) : (
-          <MeasurementDashboard
-            profile={currentUser}
-            onLogout={() => {
-              setCurrentUser(null);
-              localStorage.removeItem('currentUser');
-            }}
-          />
+          <MeasurementDashboard profile={currentUser} onLogout={handleLogout} />
         )}
       </div>
     </>
