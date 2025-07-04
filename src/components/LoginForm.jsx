@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/components/ui/use-toast';
 import { User, Lock, UserPlus } from 'lucide-react';
 
-const API_BASE_URL = "http://192.168.0.115:5000"; // Update to your backend port
+const API_BASE_URL = "https://dbtm-webapp.onrender.com/api"; // Update to your backend port
 
 const LoginForm = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
