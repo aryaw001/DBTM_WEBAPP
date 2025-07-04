@@ -5,7 +5,9 @@ import mysql from 'mysql2/promise';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: "https://dbtm-frontend.onrender.com", // ✅ your actual frontend URL
+}));
 app.use(express.json());
 
 // ✅ MySQL Connection
