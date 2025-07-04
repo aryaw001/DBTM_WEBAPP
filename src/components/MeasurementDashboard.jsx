@@ -21,7 +21,10 @@ const MeasurementDashboard = ({ profile, onLogout }) => {
   const [ipInput, setIpInput] = useState('');
   const [showIpModal, setShowIpModal] = useState(true);
   const { toast } = useToast();
-  const [userProfile, setUserProfile] = useState(profile);
+  const [userProfile, setUserProfile] = useState(() => {
+    const stored = localStorage.getItem('user');
+    return stored ? JSON.parse(stored) : null;
+  });
 
   useEffect(() => {
     const savedBodyMeasurements = localStorage.getItem('bodyMeasurements');

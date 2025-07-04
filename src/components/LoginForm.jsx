@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/components/ui/use-toast';
 import { User, Lock, UserPlus } from 'lucide-react';
 
-const API_BASE_URL = "https://dbtm-webapp.onrender.com/api"; // Update to your backend port
+const API_BASE_URL = "https://dbtm-webapp.onrender.com/api";
 
 const LoginForm = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -26,29 +26,38 @@ const LoginForm = ({ onLogin }) => {
     try {
       let res;
       if (isLogin) {
-        res = await fetch(`${API_BASE_URL}/api/login`, {
+        res = await fetch(`${API_BASE_URL}/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
         });
       } else {
-        res = await fetch(`${API_BASE_URL}/api/register`, {
+        res = await fetch(`${API_BASE_URL}/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, age, weight, email, password }),
         });
       }
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error');
 
-      localStorage.setItem('user', JSON.stringify(data.user || { email, name, age, weight }));
+      const user = data.user || {
+        id: data.id || 0,
+        name,
+        age,
+        weight,
+        email,
+      };
+
+      localStorage.setItem('user', JSON.stringify(user));
       toast({
         title: isLogin ? "Welcome back! 🎉" : "Account created! 🚀",
         description: isLogin
           ? "Successfully logged in to your dashboard."
           : "Welcome to the Athlete Measurement Dashboard.",
       });
-      onLogin(data.user || { email, name, age, weight });
+      onLogin(user);
     } catch (err) {
       toast({
         title: "Error",
@@ -56,6 +65,7 @@ const LoginForm = ({ onLogin }) => {
         variant: "destructive",
       });
     }
+
     setLoading(false);
   };
 

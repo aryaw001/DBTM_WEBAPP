@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/toaster';
 import LoginForm from '@/components/LoginForm';
 import AthleteProfile from '@/components/AthleteProfile';
 import MeasurementDashboard from '@/components/MeasurementDashboard';
+import { API_BASE_URL } from '@/lib/config';
 
 const API_BASE_URL = "https://dbtm-webapp.onrender.com/api";
 
